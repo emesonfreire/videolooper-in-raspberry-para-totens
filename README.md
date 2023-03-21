@@ -1,4 +1,4 @@
-# videolooper-in-raspberry-para-totens
+# videolooper-in-raspberry-para-totens  passo a passo em PortuguÊs
 
 # RaspberryPi VLC_Videolooper
 
