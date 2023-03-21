@@ -32,7 +32,7 @@ sudo adduser workstation
 
 ### comando2:
 
-sudo usermod -a -G adm,tty,dialout,cdrom,audio,video,plugdev,games,users,input,netdev,gpio,i2c,spi,sudo *workstation*
+sudo usermod -a -G adm,tty,dialout,cdrom,audio,video,plugdev,games,users,input,netdev,gpio,i2c,spi,sudo ***workstation**
 
 ## obs1: repare que workstation está em negrito, desta forma caso tenha dado outro nome apos o comando sudo adduser lembre-se de repetir esse usuário no lugar do nome em negrito.
 
@@ -41,7 +41,7 @@ Em seguida, faça login em sua nova conta de usuário:
 
 
 ### comando3:
-su - workstation
+`su - workstation`
 
 obs: siga a mesma regra da OBS1 ACIMA.
 
@@ -51,7 +51,7 @@ Depois de fazer login, altere as configurações de login automático in
 
 ### Comando4:
 
-sudo nano /etc/lightdm/lightdm.conf
+`sudo nano /etc/lightdm/lightdm.conf`
 
 Encontre a linha que diz autologin-user=pi e mude para autologin-user=workstation
 
@@ -59,7 +59,7 @@ crie o seguinte documento no diretorio   /etc/systemd/system/autologin@.service:
 
 ### comando5:
 
-sudo nano /etc/systemd/system/autologin@.service
+`sudo nano /etc/systemd/system/autologin@.service`
 
 Por fim, para ter certeza absoluta de que seu novo usuário estará logado na inicialização, execute:
 
@@ -69,13 +69,13 @@ Navegue até 1 System Options e selecione Boot / Auto login. Certifique-se de se
 
 conect-se com o usuário administrador com o comando abaixo:
 
-sudo - usuario
+`sudo - usuario`
 
 ***atenção**** substitua o nome usuário acima pelo nome usuário administrador da sua máquina!
 
 feito isso, Para revogar os direitos de administrador da estação de trabalho, execute o seguinte comando:
 
-sudo usermod -a -G adm,tty,dialout,cdrom,audio,video,plugdev,games,users,input,netdev,gpio,i2c,spi ***workstation**
+`sudo usermod -a -G adm,tty,dialout,cdrom,audio,video,plugdev,games,users,input,netdev,gpio,i2c,spi workstation`
 
 ## obs3: repare que workstation está em negrito, desta forma caso tenha dado outro nome apos o comando sudo adduser lembre-se de repetir esse usuário no lugar do nome em negrito.
 
@@ -92,8 +92,8 @@ Clique com o botão direito do mouse na área de trabalho para alterar as config
 Abra o gerenciador de arquivos e, em suas configurações avançadas, desative todas as notificações pop-up para quando uma unidade USB for inserida
 
 Para ocultar automaticamente o cursor do mouse, faça login na sua conta de administrador e instale o unclutter:
-su - (usuario)
-sudo apt install unclutter
+`su - (usuario)`
+`sudo apt install unclutter`
 
 ***atenção**** substitua o nome usuário acima pelo nome usuário administrador da sua máquina!
 
@@ -101,9 +101,9 @@ sudo apt install unclutter
 
 A maioria das etapas durante a configuração a seguir requer direitos de administrador, e é por isso que você deve permanecer conectado como um usuário administrador. Alguns locais de pastas usados ​​pelo nosso VLC Videolooper não existem após uma nova instalação do Raspberry Pi OS. Precisamos criá-los:
 
-sudo mkdir /home/workstation/Videos/
-sudo mkdir /home/workstation/Script
-sudo mkdir /media/workstation
+`sudo mkdir /home/workstation/Videos/`
+`sudo mkdir /home/workstation/Script`
+`sudo mkdir /media/workstation`
 
 ***atenção!**  caso não consiga criar diretamente com o comando acima, tente criar pasta por pasta utilizando o mesmo comando mkdir, ou use a função de recursividade -r*
 
@@ -115,11 +115,11 @@ A última pasta será gerada automaticamente assim que você inserir uma unidade
 Precisamos habilitar nosso Videolooper para saber quando um drive USB é inserido. Para fazer isso, primeiro definimos uma nova regra do udev:
 
 ### comando:
-sudo nano /etc/udev/rules.d/usb_hook.rules
+`sudo nano /etc/udev/rules.d/usb_hook.rules`
 
 ao abrir o editor de texto insira as informações abaixo:
 
-***ACTION=="add", KERNEL=="sd[a-z][0-9]", TAG+="systemd", ENV{SYSTEMD_WANTS}="usbstick-handler@%k"**
+`***ACTION=="add", KERNEL=="sd[a-z][0-9]", TAG+="systemd", ENV{SYSTEMD_WANTS}="usbstick-handler@%k"**`
 
 salve e saia do editor.
 
@@ -127,11 +127,11 @@ Agora criamos um serviço systemd, que monitora quando um dispositivo USB é con
 
 ### comando:
 
-sudo nano /lib/systemd/system/usbstick-handler@.service
+`sudo nano /lib/systemd/system/usbstick-handler@.service`
 
 insira as seguintes informações:
 
-[Unit]
+`[Unit]
 Description=Mount USB sticks
 BindsTo=dev-%i.device
 After=dev-%i.device
@@ -139,7 +139,7 @@ After=dev-%i.device
 [Service]
 Type=oneshot
 RemainAfterExit=yes
-ExecStart=/usr/local/bin/automount /dev/%I
+ExecStart=/usr/local/bin/automount /dev/%I`
 
 **salve e saia do editor**
 
@@ -150,19 +150,19 @@ Primeiro instalamos o inotify:
 
 ### comando:
 
-sudo apt install inotify-tools
+`sudo apt install inotify-tools`
 
 Em seguida, criamos nosso pequeno script:
 
 ### comando:
-sudo nano /usr/local/bin/automount
+`sudo nano /usr/local/bin/automount`
 
 insira as seguintes informações:
 
-#!/bin/bash
+`#!/bin/bash
 
-export mnt=/home/**workstation**/Script/.mnt
-find /dev/sd* | sed -n '1~2!p' | sed ':a;N;$!ba;s/\n/ /g' > "$mnt"
+export mnt=/home/workstation/Script/.mnt
+find /dev/sd* | sed -n '1~2!p' | sed ':a;N;$!ba;s/\n/ /g' > "$mnt"`
 
 
 
@@ -174,7 +174,7 @@ O script de montagem automática simplesmente grava o identificador de disco SCS
 Finalmente, precisamos tornar este script executável:
 
 ### comando:
-sudo chmod +x /usr/local/bin/automount
+`sudo chmod +x /usr/local/bin/automount`
 
 ## 06 - Script de reprodução automática do VLC
 
@@ -182,7 +182,7 @@ Agora criamos o script real que usa inotify como gatilho, cria uma lista de repr
 
 ### comando
 
-sudo nano /home/***workstation**/Script/autoplay.sh
+`sudo nano /home/workstation/Script/autoplay.sh`
 
 ## obs1: repare que workstation está em negrito, desta forma caso tenha dado outro nome apos o comando sudo adduser lembre-se de repetir esse usuário no lugar do nome em negrito.Depois salve o arquivo e saia do editor.
 
@@ -190,16 +190,16 @@ insira as seguintes informações que estão entre as linhas continuas   ***aten
 
 ------------------------------------------------------------------------------------------------
 
-#!/bin/sh
+`#!/bin/sh
 
 # VLC OPTIONS:
 # View all possible options: vlc -H
 
 # Specify file paths and playlist location to be used for playback
-export USB=/media/***workstation**
-export AUTOPLAY=/home/***workstation**/Videos
-export PLAYLIST=/home/***workstation**/Videos/playlist.m3u
-export mnt=/home/***workstation**/Script/.mnt
+export USB=/media/workstation
+export AUTOPLAY=/home/workstation/Videos
+export PLAYLIST=/home/workstation/Videos/playlist.m3u
+export mnt=/home/workstation/Script/.mnt
 
 FILETYPES="-name *.mp4 -o -name *.mov -o -name *.mkv"
 
@@ -258,7 +258,7 @@ find "$AUTOPLAY" -type f \( $FILETYPES \)  >> "$PLAYLIST";
 sed -i '/\/\./d' "$PLAYLIST";
 sed -i '2,$s/^/file:\/\//' "$PLAYLIST";
 sleep 0.1;
-if [ "$(wc -l < /home/***workstation**/Videos/playlist.m3u )" != "1" ]; then
+if [ "$(wc -l < /home/workstation/Videos/playlist.m3u )" != "1" ]; then
     /usr/bin/cvlc -q $Video_Output $Audio_Output $Interface_Options $Playlist_Options "$PLAYLIST"
 fi
 
@@ -273,10 +273,10 @@ while /usr/bin/inotifywait -e modify "$mnt"; do
     sed -i '/\/\./d' "$PLAYLIST";
     sed -i '2,$s/^/file:\/\//' "$PLAYLIST";
     sleep 0.1;
-    if [ "$(wc -l < /home/***workstation**/Videos/playlist.m3u )" != "1" ]; then
+    if [ "$(wc -l < /home/workstation/Videos/playlist.m3u )" != "1" ]; then
         /usr/bin/cvlc -q $Video_Output $Audio_Output $Interface_Options $Playlist_Options "$PLAYLIST"
     fi
-done
+done`
 
 ------------------------------------------------------------------------------------------------------------
 
@@ -285,7 +285,7 @@ done
 
 ## comando:
 
-sudo chmod +x /home/***workstation**/Script/autoplay.sh
+`sudo chmod +x /home/workstation/Script/autoplay.sh`
 
 
 ## 07 - Serviço VLC Autoplay
@@ -294,7 +294,7 @@ Por fim, precisamos criar outro serviço systemd que execute nosso VLC Autoplay 
 
 ### comando:
 
-sudo nano /lib/systemd/system/autoplay.service
+`sudo nano /lib/systemd/system/autoplay.service`
 
 
 
@@ -302,7 +302,7 @@ insira as seguintes informações que estão entre as linhas pontilhadas   ***at
 
 ------------------------------------------------------------------------------------------
 
-[Unit]
+`[Unit]
 Description=Autoplay
 After=multi-user.target
 
@@ -316,7 +316,7 @@ Environment="XDG_RUNTIME_DIR=/run/user/1001"
 ExecStart=/bin/sh /home/workstation/Script/autoplay.sh
 
 [Install]
-WantedBy=graphical.target
+WantedBy=graphical.target`
 
 -----------------------------------------------------------------------------------------------
 
@@ -324,20 +324,20 @@ Verifique novamente se o XDG_RUNTIME_DIR está correto (se não estiver correto,
 
 ### comando:
 
-su workstation
+`su workstation`
 
 ### comando:
-id -u
+`id -u`
 
 o número não é o 1001? então  munde para usuário administrador com o comando:
 
-## su (usuarioadministrador)
+## `su (usuarioadministrador)`
 
 execute o seguinte comando novamente:
 
 ### comando:
 
-sudo nano /lib/systemd/system/autoplay.service
+`sudo nano /lib/systemd/system/autoplay.service`
 
 Procure pela linha :Environment="XDG_RUNTIME_DIR=/run/user/1001"
 
@@ -345,20 +345,20 @@ e faça a alteração do numero de acordo com o valor encontrado pós utilizaç�
 
 logue novamente na estação de trabalho
 
-su ***workstation**
+`su workstation`
 
 e execute o seguintes comandos 1 por 1, pode ser que o 1 comando exija que vc digite a senha, pode digitar caso seja solicitado:
 
-sudo systemctl daemon-reload
+`sudo systemctl daemon-reload`
 
-sudo systemctl enable autoplay.service
+`sudo systemctl enable autoplay.service`
 
-sudo systemctl start autoplay.service
+`sudo systemctl start autoplay.service`
 
 
 **Se você receber um erro, você pode tentar:**
 
-sudo systemctl reset-failed
+`sudo systemctl reset-failed`
 
 se não siga os próximos passos:
 
@@ -370,13 +370,13 @@ acesse o diretório de script com o comando:
 
 ### comando:
 
-cd /home/***workstation**/Script
+`cd /home/workstation/Script`
 
 na pasta Script digite:
 
 ### comando:
 
-. autoplay.sh 
+`. autoplay.sh `
 
 E dê enter, ***atenção** se atente ao ponto e espaço antes da palavra autoplay.sh, não está errado é exatamente assim que deve executar. isso fara com que vc execute o escript direto da pasta para testar sua funcionalidade
 
