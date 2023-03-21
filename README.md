@@ -17,7 +17,7 @@ Antes de começar a fazer qualquer outra coisa, você deve fazer login e atualiz
 
 ### comando:
 
-sudo apt update && sudo apt upgrade
+`sudo apt update && sudo apt upgrade`
 
 
 
