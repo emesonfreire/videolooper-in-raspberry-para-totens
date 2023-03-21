@@ -186,7 +186,7 @@ sudo nano /home/***workstation**/Script/autoplay.sh
 
 ## obs1: repare que workstation está em negrito, desta forma caso tenha dado outro nome apos o comando sudo adduser lembre-se de repetir esse usuário no lugar do nome em negrito.Depois salve o arquivo e saia do editor.
 
-insira as seguintes informações que estão entre as linhas pontilhadas   ***atenção ## obs1: repare que workstation está em negrito, desta forma caso tenha dado outro nome apos o comando sudo adduser lembre-se de repetir esse usuário no lugar do nome em negrito.Depois salve o arquivo e saia do editor.**:
+insira as seguintes informações que estão entre as linhas continuas   ***atenção ## obs1: repare que workstation está em negrito, desta forma caso tenha dado outro nome apos o comando sudo adduser lembre-se de repetir esse usuário no lugar do nome em negrito.Depois salve o arquivo e saia do editor.**:
 
 ------------------------------------------------------------------------------------------------
 
