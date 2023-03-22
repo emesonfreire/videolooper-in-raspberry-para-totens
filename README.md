@@ -119,7 +119,7 @@ Precisamos habilitar nosso Videolooper para saber quando um drive USB é inserid
 
 ao abrir o editor de texto insira as informações abaixo:
 
-`***ACTION=="add", KERNEL=="sd[a-z][0-9]", TAG+="systemd", ENV{SYSTEMD_WANTS}="usbstick-handler@%k"**`
+`ACTION=="add", KERNEL=="sd[a-z][0-9]", TAG+="systemd", ENV{SYSTEMD_WANTS}="usbstick-handler@%k"`
 
 salve e saia do editor.
 
@@ -131,7 +131,7 @@ Agora criamos um serviço systemd, que monitora quando um dispositivo USB é con
 
 insira as seguintes informações:
 
-`[Unit]
+[Unit]
 Description=Mount USB sticks
 BindsTo=dev-%i.device
 After=dev-%i.device
@@ -139,7 +139,7 @@ After=dev-%i.device
 [Service]
 Type=oneshot
 RemainAfterExit=yes
-ExecStart=/usr/local/bin/automount /dev/%I`
+ExecStart=/usr/local/bin/automount /dev/%I
 
 **salve e saia do editor**
 
@@ -190,7 +190,7 @@ insira as seguintes informações que estão entre as linhas continuas   ***aten
 
 ------------------------------------------------------------------------------------------------
 
-`#!/bin/sh
+#!/bin/sh
 
 # VLC OPTIONS:
 # View all possible options: vlc -H
@@ -276,7 +276,7 @@ while /usr/bin/inotifywait -e modify "$mnt"; do
     if [ "$(wc -l < /home/workstation/Videos/playlist.m3u )" != "1" ]; then
         /usr/bin/cvlc -q $Video_Output $Audio_Output $Interface_Options $Playlist_Options "$PLAYLIST"
     fi
-done`
+done
 
 ------------------------------------------------------------------------------------------------------------
 
@@ -302,7 +302,7 @@ insira as seguintes informações que estão entre as linhas pontilhadas   ***at
 
 ------------------------------------------------------------------------------------------
 
-`[Unit]
+[Unit]
 Description=Autoplay
 After=multi-user.target
 
@@ -316,7 +316,7 @@ Environment="XDG_RUNTIME_DIR=/run/user/1001"
 ExecStart=/bin/sh /home/workstation/Script/autoplay.sh
 
 [Install]
-WantedBy=graphical.target`
+WantedBy=graphical.target
 
 -----------------------------------------------------------------------------------------------
 
