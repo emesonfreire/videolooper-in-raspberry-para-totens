@@ -159,10 +159,10 @@ Em seguida, criamos nosso pequeno script:
 
 insira as seguintes informações:
 
-`#!/bin/bash
+#!/bin/bash
 
 export mnt=/home/workstation/Script/.mnt
-find /dev/sd* | sed -n '1~2!p' | sed ':a;N;$!ba;s/\n/ /g' > "$mnt"`
+find /dev/sd* | sed -n '1~2!p' | sed ':a;N;$!ba;s/\n/ /g' > "$mnt"
 
 
 
